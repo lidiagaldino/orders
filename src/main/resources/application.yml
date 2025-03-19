@@ -1,0 +1,30 @@
+mp:
+  jwt:
+    verify:
+      publickey:
+        location: publicKey.pem
+      issuer: orders-backend
+
+smallrye:
+  jwt:
+    sign:
+      key:
+        location: privateKey.pem
+
+quarkus:
+  smallrye-jwt:
+    enabled: true
+    token:
+      header: Authorization
+      cookie: Bearer
+  application:
+    name: API Orders
+  datasource:
+    db-kind: postgresql
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+    reactive:
+      url: postgresql://localhost:5432/orders
+  hibernate-orm:
+    database:
+      generation: drop-and-create
