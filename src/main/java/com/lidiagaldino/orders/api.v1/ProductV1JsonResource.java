@@ -5,6 +5,7 @@ import com.lidiagaldino.orders.application.data.output.ProductOutputData;
 import com.lidiagaldino.orders.application.services.ProductService;
 import io.quarkus.hibernate.reactive.panache.common.WithSession;
 import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
+import io.quarkus.security.Authenticated;
 import io.smallrye.mutiny.Uni;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -15,6 +16,7 @@ import org.jboss.resteasy.reactive.RestResponse;
 @Path("/products")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@Authenticated
 public class ProductV1JsonResource {
     @Inject
     ProductService productService;

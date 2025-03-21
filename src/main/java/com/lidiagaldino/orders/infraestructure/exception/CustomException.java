@@ -1,4 +1,7 @@
 package com.lidiagaldino.orders.infraestructure.exception;
 
-public class CustomException {
+public interface CustomException {
+
+    Integer getHttpStatusCode();
+    String getErrorCode();
 }

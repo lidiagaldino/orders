@@ -19,7 +19,7 @@ public class AuthTokenService implements AuthToken {
                 .item(user)
                 .onItem()
                 .ifNotNull()
-                .transform(it -> Jwt.issuer("tickets-backend")
+                .transform(it -> Jwt.issuer("orders-backend")
                         .upn(it.getEmail())
                         .subject(it.getId())
                         .groups("user")

@@ -1,4 +1,4 @@
-package com.lidiagaldino.orders.infraestructure.cryptography;
+package com.lidiagaldino.orders.infraestructure.cryptography.password;
 
 import com.lidiagaldino.orders.domain.services.PasswordCryptography;
 import io.opentelemetry.instrumentation.annotations.WithSpan;
