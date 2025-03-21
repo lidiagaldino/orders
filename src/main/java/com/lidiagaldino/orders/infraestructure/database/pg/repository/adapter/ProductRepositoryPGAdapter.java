@@ -5,6 +5,7 @@ import com.lidiagaldino.orders.domain.repositories.ProductRepository;
 import com.lidiagaldino.orders.infraestructure.database.pg.entity.ProductEntityModel;
 import com.lidiagaldino.orders.infraestructure.database.pg.repository.ProductPGService;
 import io.opentelemetry.instrumentation.annotations.WithSpan;
+import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 
@@ -51,6 +52,17 @@ public class ProductRepositoryPGAdapter implements ProductRepository {
                 .transformToUni(it -> productPGService.findById(it))
                 .onItem()
                 .ifNotNull()
+                .transform(it -> it.to());
+    }
+
+    @Override
+    public Multi<ProductEntity> filterByName(String name) {
+        return Uni.createFrom()
+                .item(name)
+                .onItem()
+                .ifNotNull()
+                .transformToMulti(it -> this.productPGService.findByName(it))
+                .onItem()
                 .transform(it -> it.to());
     }
 }

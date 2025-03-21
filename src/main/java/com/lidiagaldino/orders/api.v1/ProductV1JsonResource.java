@@ -13,6 +13,8 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.jboss.resteasy.reactive.RestResponse;
 
+import java.util.List;
+
 @Path("/products")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -46,5 +48,23 @@ public class ProductV1JsonResource {
                 .onItem()
                 .ifNotNull()
                 .transform(it -> RestResponse.ok(it));
+    }
+
+    @GET
+    @Path("/name/{name}")
+    @WithSession
+    public Uni<RestResponse<List<ProductOutputData>>> findByName(@PathParam("name") String name) {
+        return Uni.createFrom()
+                .item(name)
+                .onItem()
+                .ifNotNull()
+                .transformToUni(it -> this.productService.filterByName(it).collect().asList())
+                .onItem()
+                .transform(it -> {
+                    if(it != null && !it.isEmpty()) {
+                        return RestResponse.ok(it);
+                    }
+                    return RestResponse.noContent();
+                });
     }
 }

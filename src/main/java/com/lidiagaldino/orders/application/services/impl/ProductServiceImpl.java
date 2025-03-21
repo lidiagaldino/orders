@@ -4,6 +4,7 @@ import com.lidiagaldino.orders.application.data.input.ProductInputData;
 import com.lidiagaldino.orders.application.data.output.ProductOutputData;
 import com.lidiagaldino.orders.application.services.ProductService;
 import com.lidiagaldino.orders.domain.repositories.ProductRepository;
+import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 
@@ -38,6 +39,17 @@ public class ProductServiceImpl implements ProductService {
                 .transformToUni(it -> this.productRepository.findById(id))
                 .onItem()
                 .ifNotNull()
+                .transform(it -> ProductOutputData.create(it));
+    }
+
+    @Override
+    public Multi<ProductOutputData> filterByName(String name) {
+        return Uni.createFrom()
+                .item(name)
+                .onItem()
+                .ifNotNull()
+                .transformToMulti(it -> this.productRepository.filterByName(it))
+                .onItem()
                 .transform(it -> ProductOutputData.create(it));
     }
 }
